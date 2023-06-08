@@ -61,12 +61,26 @@ class CreatorFromJs(CreatorOfVacancies):
 
             # каждую вакансию превращает в объект класса Vacancy, присваивая полям значения из словаря
             vacancy.name = vac['profession']   # название вакансии
-            vacancy.place = vac['address']   # место работы территориально
+
+            # место работы территориально. обработка случаев, когда место не указано
+            if vac['payment_from']:
+                vacancy.place = vac['address']
+            else:
+                vacancy.place = 'Возможно место указано в описании или названии работы'
+
+            # обрабатывает случаи, когда цена не указана
+            if vac['payment_from'] == 0:
+                vac['payment_from'] = None
+            if vac['payment_to'] == 0:
+                vac['payment_to'] = None
+
+            # работает с зп
             vacancy.salary_from = vac['payment_from']
             vacancy.salary_to = vac['payment_to']
             vacancy.salary_currency = vac['currency']
+
             vacancy.url = vac['link']
-            vacancy.description = vac['candidat']
+            vacancy.description = vac['candidat']  # описание работы
             vacancy.operating_mode = vac['type_of_work']['title']
 
             # оставляет метку, где была взята вакансия
