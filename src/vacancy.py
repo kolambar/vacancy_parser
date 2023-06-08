@@ -5,7 +5,7 @@ class Vacancy:
     """
     класс для работы с вакансиями
     """
-    def __init__(self):
+    def __init__(self, ):
         pass
 
     def __gt__(self, other):
