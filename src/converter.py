@@ -1,12 +1,14 @@
 import requests
 
+
 class Converter:
     """
     Класс для перевода валюты в рубли
     """
 
     __slots__ = ('amount', 'currency', 'rub_amount')
-    def __init__(self, amount: str, currency: int) -> None:
+
+    def __init__(self, amount: int, currency: str) -> None:
         self.amount = amount  # количество денег в иностранной валюте
 
         # Обрабатывает случай неправильного кода белорусских рублей
