@@ -40,7 +40,7 @@ class SuperApiAsker(ApiAsker):
         return requests.get('https://api.superjob.ru/2.0/vacancies', params=params, headers=headers).json()
 
 #
-# sad = SuperApiAsker()
+# sad = HhApiAsker()
 #
 # for_print = sad.get_vacancy()
 # print(for_print)

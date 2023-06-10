@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from converter import Converter
 
 
 class Vacancy:
@@ -18,7 +19,20 @@ class Vacancy:
         :param other:
         :return:
         """
-        pass
+
+        # если нет минимальной зарплаты, то приравнивает ее к максимальной.
+        self.salary_from if self.salary_from else self.salary_from = self.salary_to
+        other.salary_from if other.salary_from else other.salary_from = other.salary_to
+
+        # проверяет, чтобы валюта была в рублях. если нет, через Converter переводит в рубли
+        appropriate_currency = ('RUR', 'rub')
+        if self.salary_currency not in appropriate_currency:
+            self.salary_from = Converter(self.salary_from, self.salary_currency).rub_amount
+        if other.salary_currency not in appropriate_currency:
+            other.salary_from = Converter(other.salary_from, other.salary_currency).rub_amount
+
+        return self.salary_from > other.salary_from
+
 
     def check_data(self):
         """
