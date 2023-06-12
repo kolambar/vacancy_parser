@@ -22,20 +22,14 @@ class Vacancy:
         :return:
         """
 
-        # если нет минимальной зарплаты, то приравнивает ее к максимальной.
-        if not self.salary_from:
-            self.salary_from = self.salary_to
-        if not other.salary_from:
-            other.salary_from = other.salary_to
-
         # проверяет, чтобы валюта была в рублях. если нет, через Converter переводит в рубли
         appropriate_currency = ('RUR', 'rub')
         if self.salary_currency not in appropriate_currency:
-            self.salary_from = Converter(self.salary_from, self.salary_currency).rub_amount
+            self.salary_to_compare = Converter(self.salary_to_compare, self.salary_currency).rub_amount
         if other.salary_currency not in appropriate_currency:
-            other.salary_from = Converter(other.salary_from, other.salary_currency).rub_amount
+            other.salary_to_compare = Converter(other.salary_to_compare, other.salary_currency).rub_amount
 
-        return self.salary_from > other.salary_from
+        return self.salary_to_compare > other.salary_to_compare
 
 
 class VacanciesManager(ABC):

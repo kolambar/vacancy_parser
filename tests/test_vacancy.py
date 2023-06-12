@@ -1,12 +1,11 @@
-from src.vacancy import Vacancy
-from src.api_asker import HhApiAsker
-from src.creator_of_vacancies import CreatorFromHh
+from src.creator_of_vacancies import CreatorFromHh, CreatorFromSj
 
 
-def test___gt__():
-    sad = HhApiAsker()
-    sad_list = sad.get_vacancy()
-    sad_list_of_vac = CreatorFromHh()
-    sad_list_of_vac = sad_list_of_vac.make_vacancy(sad_list)
-    print(sad_list_of_vac)
+def test___gt__(test_dict_hh, test_dict_sj):
+    list_of_vac = CreatorFromHh()
+    list_of_vac = list_of_vac.make_vacancy(test_dict_hh)
+    assert list_of_vac[1] > list_of_vac[0]
 
+    list_of_vac = CreatorFromSj()
+    list_of_vac = list_of_vac.make_vacancy(test_dict_sj)
+    assert list_of_vac[0] > list_of_vac[1]
