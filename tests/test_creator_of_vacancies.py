@@ -28,11 +28,11 @@ def test_get_num_to_compare():
     assert CreatorFromHh.get_num_to_compare(hh_from_num, hh_to_none) == 6
     assert CreatorFromHh.get_num_to_compare(hh_from_none, hh_to_none) == 0
 
-    js_from_nil = 0
-    js_from_num = 6
-    js_to_nil = 0
-    js_to_num = 10
-    assert CreatorFromHh.get_num_to_compare(js_from_nil, js_to_num) == 10
-    assert CreatorFromHh.get_num_to_compare(js_from_num, js_to_num) == 8
-    assert CreatorFromHh.get_num_to_compare(js_from_num, js_to_nil) == 6
-    assert CreatorFromHh.get_num_to_compare(js_from_nil, js_to_nil) == 0
+    sj_from_nil = 0
+    sj_from_num = 6
+    sj_to_nil = 0
+    sj_to_num = 10
+    assert CreatorFromSj.get_num_to_compare(sj_from_nil, sj_to_num) == 10
+    assert CreatorFromSj.get_num_to_compare(sj_from_num, sj_to_num) == 8
+    assert CreatorFromSj.get_num_to_compare(sj_from_num, sj_to_nil) == 6
+    assert CreatorFromSj.get_num_to_compare(sj_from_nil, sj_to_nil) == 0

@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from src.converter import Converter
 
 
 class Vacancy:
@@ -21,14 +20,6 @@ class Vacancy:
         :param other:
         :return:
         """
-
-        # проверяет, чтобы валюта была в рублях. если нет, через Converter переводит в рубли
-        appropriate_currency = ('RUR', 'rub')
-        if self.salary_currency not in appropriate_currency:
-            self.salary_to_compare = Converter(self.salary_to_compare, self.salary_currency).rub_amount
-        if other.salary_currency not in appropriate_currency:
-            other.salary_to_compare = Converter(other.salary_to_compare, other.salary_currency).rub_amount
-
         return self.salary_to_compare > other.salary_to_compare
 
 

@@ -1,5 +1,6 @@
-from abc import ABC, abstractmethod
 from src.vacancy import Vacancy
+from abc import ABC, abstractmethod
+from src.converter import Converter
 
 
 class CreatorOfVacancies(ABC):
@@ -18,7 +19,7 @@ class CreatorOfVacancies(ABC):
 
     @staticmethod
     @abstractmethod
-    def get_num_to_compare(salary_from, salary_to):
+    def get_num_to_compare(salary_from: int | None, salary_to: int | None):
         """
         функция для получения из любого сочитания min max зарплат числа для сравнения вакансий по оплате
         :return salary_to_compare:
@@ -58,6 +59,11 @@ class CreatorFromHh(CreatorOfVacancies):
                 vacancy.salary_to = None
                 vacancy.salary_to_compare = 0
                 vacancy.salary_currency = 'rub'
+
+            # если валюта не рубли, то сумму для сравнения переведет в rub, чтобы можно было сортировать по зп
+            if vacancy.salary_currency not in ('RUR', 'rub'):
+                vacancy.salary_to_compare = Converter(vacancy.salary_to_compare, vacancy.salary_currency).rub_amount
+
             vacancy.url = vac['alternate_url']
 
             # тут нужно поменять значение, если оно None, на пустую строку
@@ -122,6 +128,10 @@ class CreatorFromSj(CreatorOfVacancies):
             vacancy.salary_to = vac['payment_to']
             vacancy.salary_currency = vac['currency']
             vacancy.salary_to_compare = CreatorFromSj.get_num_to_compare(vacancy.salary_from, vacancy.salary_to)
+
+            # если валюта не рубли, то сумму для сравнения переведет в rub, чтобы можно было сортировать по зп
+            if vacancy.salary_currency not in ('RUR', 'rub'):
+                vacancy.salary_to_compare = Converter(vacancy.salary_to_compare, vacancy.salary_currency).rub_amount
 
             vacancy.url = vac['link']
             vacancy.description = vac['candidat']  # описание работы
