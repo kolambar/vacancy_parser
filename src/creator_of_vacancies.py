@@ -93,7 +93,7 @@ class CreatorFromHh(CreatorOfVacancies):
             return 0
 
 
-class CreatorFromJs(CreatorOfVacancies):
+class CreatorFromSj(CreatorOfVacancies):
 
     @staticmethod
     def make_vacancy(job: dict) -> list:
@@ -121,7 +121,7 @@ class CreatorFromJs(CreatorOfVacancies):
             vacancy.salary_from = vac['payment_from']
             vacancy.salary_to = vac['payment_to']
             vacancy.salary_currency = vac['currency']
-            vacancy.salary_to_compare = CreatorFromJs.get_num_to_compare(vacancy.salary_from, vacancy.salary_to)
+            vacancy.salary_to_compare = CreatorFromSj.get_num_to_compare(vacancy.salary_from, vacancy.salary_to)
 
             vacancy.url = vac['link']
             vacancy.description = vac['candidat']  # описание работы

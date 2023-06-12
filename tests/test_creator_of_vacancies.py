@@ -1,4 +1,4 @@
-from src.creator_of_vacancies import CreatorFromHh, CreatorFromJs
+from src.creator_of_vacancies import CreatorFromHh, CreatorFromSj
 from src.vacancy import Vacancy
 
 
@@ -11,7 +11,7 @@ def test_make_vacancy(test_dict_hh):
 
 
 def test_make_vacancy_js(test_dict_sj):
-    test_vacancy_instances = CreatorFromJs.make_vacancy(test_dict_sj)
+    test_vacancy_instances = CreatorFromSj.make_vacancy(test_dict_sj)
     assert type(test_vacancy_instances[0]) == Vacancy
     assert test_vacancy_instances[0].url == 'https://himki.superjob.ru/vakansii/zaveduyuschij-kabinetom-mrt-vrach-rentgenolog-39075693.html'
     assert test_vacancy_instances[0].salary_to is 0

@@ -38,14 +38,6 @@ class Vacancy:
         return self.salary_from > other.salary_from
 
 
-    def check_data(self):
-        """
-        валидирует данные
-        :return:
-        """
-        pass
-
-
 class VacanciesManager(ABC):
     """
     абстрактный класс принуждает иметь методы:

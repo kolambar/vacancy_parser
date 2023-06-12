@@ -3,13 +3,6 @@ import requests
 import os
 
 
-# параметры для superjob
-headers = {'X-Api-App-Id': os.getenv("X-Api-App-Id")}
-
-params = {
-    "count": 100,
-    "page": 1,
-}
 
 class ApiAsker(ABC):
     """
@@ -37,10 +30,17 @@ class SjApiAsker(ApiAsker):
     подключается к Superjob
     """
     def get_vacancy(self):
+
+        # параметры для superjob
+        headers = {'X-Api-App-Id': os.getenv("X-Api-App-Id")}
+        params = {
+            "count": 100,
+            "page": 1,
+        }
         return requests.get('https://api.superjob.ru/2.0/vacancies', params=params, headers=headers).json()
 
-#
-# sad = HhApiAsker()
+
+# sad = SjApiAsker()
 #
 # for_print = sad.get_vacancy()
 # print(for_print)
