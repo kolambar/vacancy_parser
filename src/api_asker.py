@@ -32,7 +32,7 @@ class HhApiAsker(ApiAsker):
         return requests.get('https://api.hh.ru/vacancies/?per_page=100').json()
 
 
-class SuperApiAsker(ApiAsker):
+class SjApiAsker(ApiAsker):
     """
     подключается к Superjob
     """

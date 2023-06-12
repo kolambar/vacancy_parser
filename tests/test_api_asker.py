@@ -1,4 +1,4 @@
-from src.api_asker import HhApiAsker, SuperApiAsker
+from src.api_asker import HhApiAsker, SjApiAsker
 
 
 def test_get_vacancy():
@@ -7,7 +7,7 @@ def test_get_vacancy():
     assert inf
     assert type(inf) is list
 
-    test = SuperApiAsker()
+    test = SjApiAsker()
     inf = test.get_vacancy()
     assert inf
     assert type(inf) is list

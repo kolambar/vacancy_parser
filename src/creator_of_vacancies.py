@@ -9,6 +9,20 @@ class CreatorOfVacancies(ABC):
     @staticmethod
     @abstractmethod
     def make_vacancy(job: dict):
+        """
+        функция для приобразования инфы от api в класс Vacancy
+        :param job:
+        :return list of Vacancy:
+        """
+        pass
+
+    @staticmethod
+    @abstractmethod
+    def get_num_to_compare(salary_from, salary_to):
+        """
+        функция для получения из любого сочитания min max зарплат числа для сравнения вакансий по оплате
+        :return salary_to_compare:
+        """
         pass
 
 
@@ -16,6 +30,11 @@ class CreatorFromHh(CreatorOfVacancies):
 
     @staticmethod
     def make_vacancy(job: dict) -> list:
+        """
+        функция для приобразования инфы от api в класс Vacancy
+        :param job:
+        :return list of Vacancy:
+        """
         vacancy_instances = []  # список для хранения экземпляров
         vacancies = job['items']  # берет только информацию о вакансиях
 
@@ -26,9 +45,19 @@ class CreatorFromHh(CreatorOfVacancies):
             # каждую вакансию превращает в объект класса Vacancy, присваивая полям значения из словаря
             vacancy.name = vac['name']   # название вакансии
             vacancy.place = vac['area']['name']   # место работы территориально
-            vacancy.salary_from = vac['salary']['from']
-            vacancy.salary_to = vac['salary']['to']
-            vacancy.salary_currency = vac['salary']['currency']
+
+            # получает зарплату и на ее основе выводит число для сравнение вакансий по зп (salary_to_compare)
+            if vac['salary']:
+                vacancy.salary_from = vac['salary']['from']
+                vacancy.salary_to = vac['salary']['to']
+                vacancy.salary_currency = vac['salary']['currency']
+                vacancy.salary_to_compare = CreatorFromHh.get_num_to_compare(vacancy.salary_from, vacancy.salary_to)
+            else:
+                # этот блок нежен, чтобы у всех вакансий были поля с зп, даже если vac['salary'] = None
+                vacancy.salary_from = None
+                vacancy.salary_to = None
+                vacancy.salary_to_compare = 0
+                vacancy.salary_currency = 'rub'
             vacancy.url = vac['alternate_url']
 
             # тут нужно поменять значение, если оно None, на пустую строку
@@ -48,11 +77,31 @@ class CreatorFromHh(CreatorOfVacancies):
             vacancy_instances.append(vacancy)
         return vacancy_instances
 
+    @staticmethod
+    def get_num_to_compare(salary_from, salary_to):
+        """
+        функция для получения из любого сочитания min max зарплат числа для сравнения вакансий по оплате
+        :return salary_to_compare:
+        """
+        if salary_from and salary_to:
+            return (salary_from + salary_to) / 2
+        elif salary_from:
+            return salary_from
+        elif salary_to:
+            return salary_to
+        else:
+            return 0
+
 
 class CreatorFromJs(CreatorOfVacancies):
 
     @staticmethod
     def make_vacancy(job: dict) -> list:
+        """
+        функция для приобразования инфы от api в класс Vacancy
+        :param job:
+        :return list of Vacancy:
+        """
         vacancy_instances = []  # список для хранения экземпляров
         vacancies = job['objects']  # берет только информацию о вакансиях
 
@@ -68,16 +117,11 @@ class CreatorFromJs(CreatorOfVacancies):
             else:
                 vacancy.place = 'Возможно место указано в описании или названии работы'
 
-            # обрабатывает случаи, когда цена не указана
-            if vac['payment_from'] == 0:
-                vac['payment_from'] = None
-            if vac['payment_to'] == 0:
-                vac['payment_to'] = None
-
-            # работает с зп
+            # получает зарплату и на ее основе выводит число для сравнение вакансий по зп (salary_to_compare)
             vacancy.salary_from = vac['payment_from']
             vacancy.salary_to = vac['payment_to']
             vacancy.salary_currency = vac['currency']
+            vacancy.salary_to_compare = CreatorFromJs.get_num_to_compare(vacancy.salary_from, vacancy.salary_to)
 
             vacancy.url = vac['link']
             vacancy.description = vac['candidat']  # описание работы
@@ -89,3 +133,18 @@ class CreatorFromJs(CreatorOfVacancies):
             # добавляет в экземпляр с заполненными полями в список и возвращает его
             vacancy_instances.append(vacancy)
         return vacancy_instances
+
+    @staticmethod
+    def get_num_to_compare(salary_from, salary_to):
+        """
+        функция для получения из любого сочитания min max зарплат числа для сравнения вакансий по оплате
+        :return salary_to_compare:
+        """
+        if salary_from and salary_to:
+            return (salary_from + salary_to) / 2
+        elif salary_from:
+            return salary_from
+        elif salary_to:
+            return salary_to
+        else:
+            return 0

@@ -1,16 +1,18 @@
 from abc import ABC, abstractmethod
-from converter import Converter
+from src.converter import Converter
 
 
 class Vacancy:
     """
     класс для работы с вакансиями
     """
-    __slots__ = ('name', 'place', 'salary_from', 'salary_to', 'salary_currency', 'url', 'description', 'operating_mode', 'made_from')
+    __slots__ = ('name', 'place', 'salary_from', 'salary_to', 'salary_currency', 'salary_to_compare', 'url',
+                 'description', 'operating_mode', 'made_from')
 
     def __repr__(self):
-        return f'Название: {self.name}, место: {self.place}, зп от: {self.salary_from}, зп до: {self.salary_to}, {self.salary_currency},' \
-               f' ссылка: {self.url}, описание:\n{self.description},\nрежим работы: {self.operating_mode}, размещено на {self.made_from}'
+        return f'Название: {self.name}, место: {self.place}, зп от: {self.salary_from}, зп до: {self.salary_to},' \
+               f'зп для сравнения: {self.salary_to_compare} {self.salary_currency}, ссылка: {self.url}, ' \
+               f'описание: {self.description},\nрежим работы: {self.operating_mode}, размещено на {self.made_from}'
 
     def __gt__(self, other):
         """
@@ -21,8 +23,10 @@ class Vacancy:
         """
 
         # если нет минимальной зарплаты, то приравнивает ее к максимальной.
-        self.salary_from if self.salary_from else self.salary_from = self.salary_to
-        other.salary_from if other.salary_from else other.salary_from = other.salary_to
+        if not self.salary_from:
+            self.salary_from = self.salary_to
+        if not other.salary_from:
+            other.salary_from = other.salary_to
 
         # проверяет, чтобы валюта была в рублях. если нет, через Converter переводит в рубли
         appropriate_currency = ('RUR', 'rub')

@@ -9,9 +9,30 @@ def test_make_vacancy(test_dict_hh):
     assert test_vacancy_instances[0].salary_to is None
     assert test_vacancy_instances[0].salary_from == 300000
 
+
 def test_make_vacancy_js(test_dict_sj):
     test_vacancy_instances = CreatorFromJs.make_vacancy(test_dict_sj)
     assert type(test_vacancy_instances[0]) == Vacancy
     assert test_vacancy_instances[0].url == 'https://himki.superjob.ru/vakansii/zaveduyuschij-kabinetom-mrt-vrach-rentgenolog-39075693.html'
-    assert test_vacancy_instances[0].salary_to is None
+    assert test_vacancy_instances[0].salary_to is 0
     assert test_vacancy_instances[0].salary_from == 120000
+
+
+def test_get_num_to_compare():
+    hh_from_none = None
+    hh_from_num = 6
+    hh_to_none = None
+    hh_to_num = 10
+    assert CreatorFromHh.get_num_to_compare(hh_from_none, hh_to_num) == 10
+    assert CreatorFromHh.get_num_to_compare(hh_from_num, hh_to_num) == 8
+    assert CreatorFromHh.get_num_to_compare(hh_from_num, hh_to_none) == 6
+    assert CreatorFromHh.get_num_to_compare(hh_from_none, hh_to_none) == 0
+
+    js_from_nil = 0
+    js_from_num = 6
+    js_to_nil = 0
+    js_to_num = 10
+    assert CreatorFromHh.get_num_to_compare(js_from_nil, js_to_num) == 10
+    assert CreatorFromHh.get_num_to_compare(js_from_num, js_to_num) == 8
+    assert CreatorFromHh.get_num_to_compare(js_from_num, js_to_nil) == 6
+    assert CreatorFromHh.get_num_to_compare(js_from_nil, js_to_nil) == 0

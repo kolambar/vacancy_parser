@@ -1,5 +1,5 @@
 from src.vacancy import Vacancy, ManagerJsonVac
-from src.api_asker import HhApiAsker, SuperApiAsker
+from src.api_asker import HhApiAsker, SjApiAsker
 
 
 def main():
