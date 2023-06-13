@@ -430,3 +430,23 @@ def test_dict_sj():
   'subscription_active': False
 }
     return test_dict
+
+
+@pytest.fixture
+def test_class_list():
+
+    class TestClass:
+
+        __slots__ = ('name', 'age', 'height')
+        def __init__(self, name, age, height):
+            self.name = name
+            self.age = age
+            self.height = height
+
+    class_list = []
+
+    class_list.append(TestClass('Bob', 27, 178.4))
+    class_list.append(TestClass('Lida', 30, 158.8))
+    class_list.append(TestClass('Eric', 14, 165.4))
+    class_list.append(TestClass('Ange', 17, 170.1))
+    return class_list

@@ -19,16 +19,18 @@ class VacanciesManager(ABC):
         """
         pass
 
+    @staticmethod
     @abstractmethod
-    def show_by(self):
+    def show_by(slot, value, json_file):
         """
         отабражения вакансий по критериям
         :return:
         """
         pass
 
+    @staticmethod
     @abstractmethod
-    def del_vacancy(self):
+    def del_vacancy():
         """
         удаление вакансий
         :return:
@@ -51,8 +53,17 @@ class ManagerJsonVac(VacanciesManager):
                 list_with_vac.append(dict_of_instance)
             json.dump(list_with_vac, file, indent=2, ensure_ascii=False)
 
-    def show_by(self):
-        pass
+    @staticmethod
+    def show_by(slot, value, json_file):
+        with open(json_file, 'r', encoding='utf=8') as file:
+            list_of_relevant_vac = []
+            data = json.load(file)
+            for vac in data:
+                if vac[slot] == value:
+                    list_of_relevant_vac.append(vac)
+        return list_of_relevant_vac
 
-    def del_vacancy(self):
+
+    @staticmethod
+    def del_vacancy():
         pass
