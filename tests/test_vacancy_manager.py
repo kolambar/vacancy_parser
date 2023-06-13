@@ -16,3 +16,9 @@ def test_show_by():
     assert bob_list[0]['name'] == "Eric"
     assert bob_list[0]['age'] == 14
     assert bob_list[0]['height'] == 165.4
+    bob_list = ManagerJsonVac.show_by('age', '<18', 'test_json_file.json')
+    assert bob_list[0]['age'] == 14
+    assert bob_list[1]['age'] == 17
+    bob_list = ManagerJsonVac.show_by('age', '>18', 'test_json_file.json')
+    assert bob_list[0]['age'] == 27
+    assert bob_list[1]['age'] == 30

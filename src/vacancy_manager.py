@@ -55,12 +55,37 @@ class ManagerJsonVac(VacanciesManager):
 
     @staticmethod
     def show_by(slot, value, json_file):
+        """
+        отабражения вакансий по критериям
+
+        ищет по конкретным value, а также
+        поддерживает возможность находить
+        все вакансии больше или меньше value
+        :return:
+        """
         with open(json_file, 'r', encoding='utf=8') as file:
             list_of_relevant_vac = []
             data = json.load(file)
-            for vac in data:
-                if vac[slot] == value:
-                    list_of_relevant_vac.append(vac)
+
+            # проверка, нужно ли искать конкретное значения или все, что меньше
+            if type(value) is str and value[0] == '<':
+                value = int(value[1:])
+                for vac in data:
+                    if vac[slot] < value:
+                        list_of_relevant_vac.append(vac)
+
+            # проверка, нужно ли искать конкретное значения или все, что больше
+            elif type(value) is str and value[0] == '>':
+                value = int(value[1:])
+                for vac in data:
+                    if vac[slot] > value:
+                        list_of_relevant_vac.append(vac)
+
+            # для остальных случаев
+            else:
+                for vac in data:
+                    if vac[slot] == value:
+                        list_of_relevant_vac.append(vac)
         return list_of_relevant_vac
 
 
