@@ -1,6 +1,3 @@
-from abc import ABC, abstractmethod
-
-
 class Vacancy:
     """
     класс для работы с вакансиями
@@ -21,48 +18,3 @@ class Vacancy:
         :return:
         """
         return self.salary_to_compare > other.salary_to_compare
-
-
-class VacanciesManager(ABC):
-    """
-    абстрактный класс принуждает иметь методы:
-    - добавления вакансий в JSON
-    - отабражения вакансий по критериям
-    - удаление вакансий
-    """
-
-    @abstractmethod
-    def save_on(self):
-        """
-        добавления вакансий в JSON
-        :return:
-        """
-        pass
-
-    @abstractmethod
-    def show_by(self):
-        """
-        отабражения вакансий по критериям
-        :return:
-        """
-        pass
-
-    @abstractmethod
-    def del_vacancy(self):
-        """
-        удаление вакансий
-        :return:
-        """
-        pass
-
-
-class ManagerJsonVac(VacanciesManager):
-
-    def save_on(self):
-        pass
-
-    def show_by(self):
-        pass
-
-    def del_vacancy(self):
-        pass

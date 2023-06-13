@@ -3,7 +3,6 @@ import requests
 import os
 
 
-
 class ApiAsker(ABC):
     """
     абстрактный клас требующий метод для подключения по API и метод для получения вакансий
@@ -38,9 +37,3 @@ class SjApiAsker(ApiAsker):
             "page": 1,
         }
         return requests.get('https://api.superjob.ru/2.0/vacancies', params=params, headers=headers).json()
-
-
-# sad = SjApiAsker()
-#
-# for_print = sad.get_vacancy()
-# print(for_print)
