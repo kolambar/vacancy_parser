@@ -58,9 +58,13 @@ class ManagerJsonVac(VacanciesManager):
         """
         отабражения вакансий по критериям
 
-        ищет по конкретным value, а также
+        ищет по конкретным value
+
         поддерживает возможность находить
         все вакансии больше или меньше value
+
+        может искать, есть ли ключевое слово
+         в каком-нибудь из полей
         :return:
         """
         with open(json_file, 'r', encoding='utf=8') as file:
@@ -86,6 +90,14 @@ class ManagerJsonVac(VacanciesManager):
                 for vac in data:
                     if vac[slot] == value:
                         list_of_relevant_vac.append(vac)
+                    # чтобы в поиске отображались те вакансии в которых есть ключевое слово
+                    elif type(value) == str:
+                        try:
+                            if value.lower() in vac[slot].lower():
+                                list_of_relevant_vac.append(vac)
+                        except:
+                            pass
+
         return list_of_relevant_vac
 
 
