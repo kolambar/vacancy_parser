@@ -81,6 +81,10 @@ class CreatorFromHh(CreatorOfVacancies):
             # требования и описания записывает в одно поле
             vacancy.description = vac['snippet']['requirement'] + '\n' + vac['snippet']['responsibility']
             vacancy.operating_mode = vac['employment']['name']
+            if vacancy.operating_mode == 'Полный рабочий день':
+                vacancy.operating_mode = 'Полная занятость'
+            if vacancy.operating_mode == 'Неполный рабочий день':
+                vacancy.operating_mode = 'Частичная занятость'
 
             # оставляет метку, где была взята вакансия
             vacancy.made_from = 'HeadHunter'
@@ -127,6 +131,10 @@ class CreatorFromSj(CreatorOfVacancies):
             vacancy.url = vac['link']
             vacancy.description = vac['candidat']  # описание работы
             vacancy.operating_mode = vac['type_of_work']['title']
+            if vacancy.operating_mode == 'Полный рабочий день':
+                vacancy.operating_mode = 'Полная занятость'
+            if vacancy.operating_mode == 'Неполный рабочий день':
+                vacancy.operating_mode = 'Частичная занятость'
 
             # оставляет метку, где была взята вакансия
             vacancy.made_from = 'SuperJob'

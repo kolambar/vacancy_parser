@@ -98,7 +98,7 @@ class ManagerJsonVac(VacanciesManager):
         list_of_relevant_vac = []
 
         for vac in data:
-            if vac[slot] == value:
+            if vac[slot].lower().strip() == value.lower().strip():
                 list_of_relevant_vac.append(vac)
 
         return list_of_relevant_vac
@@ -115,7 +115,7 @@ class ManagerJsonVac(VacanciesManager):
 
         for vac in data:
             try:
-                if value.lower() in vac[slot].lower():
+                if value.lower().strip() in vac[slot].lower().strip():
                     list_of_relevant_vac.append(vac)
             except TypeError:
                 pass
