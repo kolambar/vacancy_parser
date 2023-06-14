@@ -21,7 +21,7 @@ class VacanciesManager(ABC):
 
     @staticmethod
     @abstractmethod
-    def show_by(slot, value, json_file):
+    def open_file(json_file):
         """
         отабражения вакансий по критериям
         :return:
@@ -30,7 +30,7 @@ class VacanciesManager(ABC):
 
     @staticmethod
     @abstractmethod
-    def del_vacancy():
+    def del_vacancy(data):
         """
         удаление вакансий
         :return:
@@ -54,53 +54,79 @@ class ManagerJsonVac(VacanciesManager):
             json.dump(list_with_vac, file, indent=2, ensure_ascii=False)
 
     @staticmethod
-    def show_by(slot, value, json_file):
+    def open_file(json_file):
+        with open(json_file, 'r', encoding='utf=8') as file:
+            return json.load(file)
+
+
+    @staticmethod
+    def show_by_salary(slot, value, data):
+        """
+        отабражения вакансий по критериям
+
+        находить все вакансии больше или меньше value
+        используется для зп
+        :return list_of_relevant_vac:
+        """
+        list_of_relevant_vac = []
+
+        # проверка, нужно ли искать конкретное значения или все, что меньше
+        if type(value) is str and value[0] == '<':
+            value = int(value[1:])
+            for vac in data:
+                if vac[slot] < value:
+                    list_of_relevant_vac.append(vac)
+
+        # проверка, нужно ли искать конкретное значения или все, что больше
+        elif type(value) is str and value[0] == '>':
+            value = int(value[1:])
+            for vac in data:
+                if vac[slot] > value:
+                    list_of_relevant_vac.append(vac)
+
+        return list_of_relevant_vac
+
+    @staticmethod
+    def show_by_criterion(slot, value, data):
         """
         отабражения вакансий по критериям
 
         ищет по конкретным value
 
-        поддерживает возможность находить
-        все вакансии больше или меньше value
-
-        может искать, есть ли ключевое слово
-         в каком-нибудь из полей
-        :return:
+        :return list_of_relevant_vac:
         """
-        with open(json_file, 'r', encoding='utf=8') as file:
-            list_of_relevant_vac = []
-            data = json.load(file)
+        list_of_relevant_vac = []
 
-            # проверка, нужно ли искать конкретное значения или все, что меньше
-            if type(value) is str and value[0] == '<':
-                value = int(value[1:])
-                for vac in data:
-                    if vac[slot] < value:
-                        list_of_relevant_vac.append(vac)
-
-            # проверка, нужно ли искать конкретное значения или все, что больше
-            elif type(value) is str and value[0] == '>':
-                value = int(value[1:])
-                for vac in data:
-                    if vac[slot] > value:
-                        list_of_relevant_vac.append(vac)
-
-            # для остальных случаев
-            else:
-                for vac in data:
-                    if vac[slot] == value:
-                        list_of_relevant_vac.append(vac)
-                    # чтобы в поиске отображались те вакансии в которых есть ключевое слово
-                    elif type(value) == str:
-                        try:
-                            if value.lower() in vac[slot].lower():
-                                list_of_relevant_vac.append(vac)
-                        except:
-                            pass
+        for vac in data:
+            if vac[slot] == value:
+                list_of_relevant_vac.append(vac)
 
         return list_of_relevant_vac
 
+    @staticmethod
+    def show_by_key(slot, value, data):
+        """
+        может искать, есть ли ключевое слово
+        в каком-нибудь из полей
+
+        :return list_of_relevant_vac:
+        """
+        list_of_relevant_vac = []
+
+        for vac in data:
+            try:
+                if value.lower() in vac[slot].lower():
+                    list_of_relevant_vac.append(vac)
+            except TypeError:
+                pass
+
+        return list_of_relevant_vac
 
     @staticmethod
-    def del_vacancy():
-        pass
+    def del_vacancy(list_of_relevant_vac):
+        """
+        удаляет результат сортировок вакансий.
+        сбрасывает фильтры
+        """
+        list_of_relevant_vac.clear()
+        return list_of_relevant_vac

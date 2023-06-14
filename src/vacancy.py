@@ -18,3 +18,8 @@ class Vacancy:
         :return:
         """
         return self.salary_to_compare > other.salary_to_compare
+
+    def __lt__(self, other):
+        return self.salary_to_compare < other.salary_to_compare
+
+    # lt eq sorted(list)

@@ -6,21 +6,23 @@ class Converter:
     Класс для перевода валюты в рубли
     """
 
-    __slots__ = ('amount', 'currency', 'rub_amount')
-
-    def __init__(self, amount: int, currency: str) -> None:
-        self.amount = amount  # количество денег в иностранной валюте
+    @staticmethod
+    def convert_it(amount: int, currency: str) -> float:
+        """
+        переводит валюту в рубли
+        :param amount:
+        :param currency:
+        :return rub:
+        """
 
         # Обрабатывает случай неправильного кода белорусских рублей
         if currency == 'BYR':
             currency = 'BYN'
-        self.currency = currency.upper()  # название валюты, сокращенное, 3 буквы
+
+        currency = currency.upper()  # название валюты, сокращенное, 3 большие буквы
 
         # запрос на сайт для перевода валюты в рубли
-        url = f'https://api.exchangerate.host/convert?from={self.currency}&to=RUB&amount={self.amount}'
-        response = requests.get(url)
-        data = response.json()
-        self.rub_amount = data['result']  # результат - количество рублей
+        url = f'https://api.exchangerate.host/convert?from={currency}&to=RUB&amount={amount}'
+        data = requests.get(url).json()
 
-    def __str__(self):
-        return f'{self.rub_amount}'
+        return data['result']

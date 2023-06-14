@@ -18,13 +18,19 @@ class CreatorOfVacancies(ABC):
         pass
 
     @staticmethod
-    @abstractmethod
     def get_num_to_compare(salary_from: int | None, salary_to: int | None):
         """
         функция для получения из любого сочитания min max зарплат числа для сравнения вакансий по оплате
         :return salary_to_compare:
         """
-        pass
+        if salary_from and salary_to:
+            return (salary_from + salary_to) / 2
+        elif salary_from:
+            return salary_from
+        elif salary_to:
+            return salary_to
+        else:
+            return 0
 
 
 class CreatorFromHh(CreatorOfVacancies):
@@ -62,7 +68,7 @@ class CreatorFromHh(CreatorOfVacancies):
 
             # если валюта не рубли, то сумму для сравнения переведет в rub, чтобы можно было сортировать по зп
             if vacancy.salary_currency not in ('RUR', 'rub'):
-                vacancy.salary_to_compare = Converter(vacancy.salary_to_compare, vacancy.salary_currency).rub_amount
+                vacancy.salary_to_compare = Converter.convert_it(vacancy.salary_to_compare, vacancy.salary_currency)
 
             vacancy.url = vac['alternate_url']
 
@@ -82,21 +88,6 @@ class CreatorFromHh(CreatorOfVacancies):
             # добавляет в экземпляр с заполненными полями в список и возвращает его
             vacancy_instances.append(vacancy)
         return vacancy_instances
-
-    @staticmethod
-    def get_num_to_compare(salary_from, salary_to):
-        """
-        функция для получения из любого сочитания min max зарплат числа для сравнения вакансий по оплате
-        :return salary_to_compare:
-        """
-        if salary_from and salary_to:
-            return (salary_from + salary_to) / 2
-        elif salary_from:
-            return salary_from
-        elif salary_to:
-            return salary_to
-        else:
-            return 0
 
 
 class CreatorFromSj(CreatorOfVacancies):
@@ -131,7 +122,7 @@ class CreatorFromSj(CreatorOfVacancies):
 
             # если валюта не рубли, то сумму для сравнения переведет в rub, чтобы можно было сортировать по зп
             if vacancy.salary_currency not in ('RUR', 'rub'):
-                vacancy.salary_to_compare = Converter(vacancy.salary_to_compare, vacancy.salary_currency).rub_amount
+                vacancy.salary_to_compare = Converter.convert_it(vacancy.salary_to_compare, vacancy.salary_currency)
 
             vacancy.url = vac['link']
             vacancy.description = vac['candidat']  # описание работы
@@ -143,18 +134,3 @@ class CreatorFromSj(CreatorOfVacancies):
             # добавляет в экземпляр с заполненными полями в список и возвращает его
             vacancy_instances.append(vacancy)
         return vacancy_instances
-
-    @staticmethod
-    def get_num_to_compare(salary_from, salary_to):
-        """
-        функция для получения из любого сочитания min max зарплат числа для сравнения вакансий по оплате
-        :return salary_to_compare:
-        """
-        if salary_from and salary_to:
-            return (salary_from + salary_to) / 2
-        elif salary_from:
-            return salary_from
-        elif salary_to:
-            return salary_to
-        else:
-            return 0

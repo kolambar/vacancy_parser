@@ -1,10 +1,10 @@
 from src.converter import Converter
 
 
-def test___init__():
-    cost = Converter(3500, 'USD')
-    assert cost.rub_amount > 3500
-    assert isinstance(cost.rub_amount, float)
+def test_convert_it():
+    cost = Converter.convert_it(3500, 'USD')
+    assert cost > 3500
+    assert isinstance(cost, float)
 
 
 def test_situation():
@@ -14,8 +14,7 @@ def test_situation():
             self.currency = currency
 
     cost = Money(100, 'EUR')
-
-    cost.amount = Converter(cost.amount, cost.currency).rub_amount
+    cost.amount = Converter.convert_it(cost.amount, cost.currency)
 
     assert cost.amount > 100
     assert isinstance(cost.amount, float)
