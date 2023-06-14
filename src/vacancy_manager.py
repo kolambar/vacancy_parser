@@ -55,9 +55,13 @@ class ManagerJsonVac(VacanciesManager):
 
     @staticmethod
     def open_file(json_file):
+        """
+        открывает файл
+        :param json_file:
+        :return json.load(file):
+        """
         with open(json_file, 'r', encoding='utf=8') as file:
             return json.load(file)
-
 
     @staticmethod
     def show_by_salary(slot, value, data):
@@ -87,7 +91,7 @@ class ManagerJsonVac(VacanciesManager):
         return list_of_relevant_vac
 
     @staticmethod
-    def show_by_criterion(slot, value, data):
+    def show_by_criterion(slot: str, value: str, data: list):
         """
         отабражения вакансий по критериям
 
@@ -104,7 +108,7 @@ class ManagerJsonVac(VacanciesManager):
         return list_of_relevant_vac
 
     @staticmethod
-    def show_by_key(slot, value, data):
+    def show_by_key(slot: str, value: str, data: list):
         """
         может искать, есть ли ключевое слово
         в каком-нибудь из полей
@@ -117,7 +121,7 @@ class ManagerJsonVac(VacanciesManager):
             try:
                 if value.lower().strip() in vac[slot].lower().strip():
                     list_of_relevant_vac.append(vac)
-            except TypeError:
+            except AttributeError:
                 pass
 
         return list_of_relevant_vac

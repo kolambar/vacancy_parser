@@ -21,6 +21,9 @@ class HhApiAsker(ApiAsker):
     подключается к HeadHunter
     """
     def get_vacancy(self):
+        """
+        подключается к HeadHunter и получает вакансии
+        """
         return requests.get('https://api.hh.ru/vacancies/?per_page=100').json()
 
 
@@ -29,7 +32,9 @@ class SjApiAsker(ApiAsker):
     подключается к Superjob
     """
     def get_vacancy(self):
-
+        """
+        подключается к Superjob и получает вакансии
+        """
         # параметры для superjob
         headers = {'X-Api-App-Id': os.getenv("X-Api-App-Id")}
         params = {

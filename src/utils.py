@@ -1,34 +1,56 @@
 from src.vacancy_manager import ManagerJsonVac
+import json
+import sys
+
+
+def ran_out_of_vacancy(data):
+    """
+    функция следит, чтобы не закончились вакансии и, если это произошло, завершает работу программы
+    :param data:
+    :return:
+    """
+    if len(data) == 0:
+        sys.exit('К сожалению, подходящих вакансий нет.')
+    else:
+        print(f'Осталось {len(data)} вакансий')
 
 
 def ask_me(choice):
+    """
+    функция общается с пользователем и сортирует вакансии
+    :param choice:
+    :return data:
+    """
 
     solution_methods = {'1': 'new_json_file_hh.json', '2': 'new_json_file_sj.json', '3': 'new_json_file.json'}
     data = ManagerJsonVac.open_file(solution_methods[choice])
 
     # сортирует по професии
-    profession = input('Напишите название профессии, по которой нужно предоставить информацию\n'
+    profession = input('\nНапишите название профессии, по которой нужно предоставить информацию\n'
                        'Если хотите пропустить, нажмите Enter\n')
     if profession:
         data = ManagerJsonVac.show_by_key("name", profession, data)
+        ran_out_of_vacancy(data)
 
     # сортирует по зарплате
-    salary = input('Какая зарплата Вас интересует?\n'
-          'Напишите "<" или ">" и зарплату в рублях без пробелов.\n'
-          'Пример ">20000"\n'
-          'Если хотите пропустить, нажмите Enter\n')
+    salary = input('\nКакая зарплата Вас интересует?\n'
+                   'Напишите "<" или ">" и зарплату в рублях без пробелов.\n'
+                   'Пример ">20000"\n'
+                   'Если хотите пропустить, нажмите Enter\n')
     if salary:
         data = ManagerJsonVac.show_by_salary("salary_to_compare", salary, data)
+        ran_out_of_vacancy(data)
 
     # сортирует по месту работы
-    place = input('Где бы Вы хотели работать?\n'
+    place = input('\nГде бы Вы хотели работать?\n'
                   'Напишите название города или региона.\n'
                   'Если хотите пропустить, нажмите Enter\n')
     if place:
-        data = ManagerJsonVac.show_by_criterion("place", place, data)
+        data = ManagerJsonVac.show_by_key("place", place, data)
+        ran_out_of_vacancy(data)
 
     # сортирует по рабочему режиму
-    operating_mode = input('Если вам важен режим работы напишите соответствующее число:\n'
+    operating_mode = input('\nЕсли вам важен режим работы напишите соответствующее число:\n'
                            '1. Полная занятость\n'
                            '2. Сменный график работы\n'
                            '3. Частичная занятость\n'
@@ -46,5 +68,36 @@ def ask_me(choice):
             '6': 'Проектная работа'
         }
         data = ManagerJsonVac.show_by_criterion("operating_mode", chosen_operating_mode[operating_mode], data)
+        ran_out_of_vacancy(data)
 
+    return data
+
+
+def save_result(list_of_relevant_vac, file_with_vac):
+    """
+    сохраняет результаты подбора в файл.
+    перезаписывает содержимое
+    :param list_of_relevant_vac:
+    :param file_with_vac:
+    """
+    with open(file_with_vac, 'w', encoding='utf=8') as file:
+        json.dump(list_of_relevant_vac, file, indent=2, ensure_ascii=False)
+
+
+def do_sort(data):
+    """
+    Спрашивает у пользователя разрешение
+    Сортирует список с ЭК
+    :param data:
+    :return data:
+    """
+    answer = input('\nОтсортировать вакансии по зарплате?\n'
+                   'Напишите "1", если хотите по возрастанию\n'
+                   'Напишите "2", если хотите по убыванию\n'
+                   'Если хотите пропустить, нажмите Enter\n').strip()
+
+    if answer == '1':
+        data = sorted(data)
+    elif answer == '2':
+        data = sorted(data, reverse=False)
     return data

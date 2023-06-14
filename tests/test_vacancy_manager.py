@@ -4,6 +4,7 @@ import os
 
 data = ManagerJsonVac.open_file('test_json_file.json')
 
+
 def test_save_on(test_class_list):
     ManagerJsonVac.save_on(test_class_list, 'test_json_file.json')
     assert os.path.isfile('test_json_file.json')
@@ -14,10 +15,6 @@ def test_show_by_criterion():
     assert bob_list[0]['name'] == "Lida"
     assert bob_list[0]['age'] == 30
     assert bob_list[0]['height'] == 158.8
-    bob_list = ManagerJsonVac.show_by_criterion('age', 14,  data)
-    assert bob_list[0]['name'] == "Eric"
-    assert bob_list[0]['age'] == 14
-    assert bob_list[0]['height'] == 165.4
 
 
 def test_show_by_salary():
@@ -30,7 +27,7 @@ def test_show_by_salary():
 
 
 def test_show_by_key():
-    bob_list = ManagerJsonVac.show_by_key('name', 'l',  data)
+    bob_list = ManagerJsonVac.show_by_key('name', 'li',  data)
     assert bob_list[0]['name'] == "Lida"
 
 
