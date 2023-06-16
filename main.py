@@ -15,12 +15,16 @@ def main():
                    '2. SuperJob\n'
                    '3. На обоих сайтах\n'
                    'Напишите цифру варианта.\n').strip()
+
+    # сортирует по професии
+    profession = input('\nНапишите название профессии, по которой нужно предоставить информацию\n')
+
     print('Сбор вакансий может занять около 10 секунд...')
 
     if choice.strip() in '13':  # проверяет был, ли выбран 1 или 3 вариант
         # загружает актуальные вакансии по api
         hh = HhApiAsker()
-        hh_dict = hh.get_vacancy()
+        hh_dict = hh.get_vacancy(profession)
 
         # трансформирует вакансии с hh в экземпляры класса Vacancy
         vacancy_instances_hh = CreatorFromHh.make_vacancy(hh_dict)
@@ -28,7 +32,7 @@ def main():
     if choice.strip() in '23':  # проверяет был, ли выбран 2 или 3 вариант
         # загружает актуальные вакансии по api
         sj = SjApiAsker()
-        sj_dict = sj.get_vacancy()
+        sj_dict = sj.get_vacancy(profession)
 
         # трансформирует вакансии с sj в экземпляры класса Vacancy
         vacancy_instances_sj = CreatorFromSj.make_vacancy(sj_dict)

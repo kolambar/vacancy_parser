@@ -25,13 +25,6 @@ def ask_me(choice):
     solution_methods = {'1': 'new_json_file_hh.json', '2': 'new_json_file_sj.json', '3': 'new_json_file.json'}
     data = ManagerJsonVac.open_file(solution_methods[choice])
 
-    # сортирует по професии
-    profession = input('\nНапишите название профессии, по которой нужно предоставить информацию\n'
-                       'Если хотите пропустить, нажмите Enter\n')
-    if profession:
-        data = ManagerJsonVac.show_by_key("name", profession, data)
-        ran_out_of_vacancy(data)
-
     # сортирует по зарплате
     salary = input('\nКакая зарплата Вас интересует?\n'
                    'Напишите "<" или ">" и зарплату в рублях без пробелов.\n'
